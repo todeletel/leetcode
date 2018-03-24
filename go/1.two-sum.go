@@ -27,7 +27,7 @@
  */
 func twoSum(nums []int, target int) []int {
 	r:=[]int{0,0}
-	for i :=0;i<len(nums);i++{
+	/*for i :=0;i<len(nums);i++{
 		for j:=0;j<len(nums);j++{
 			if( i== j) {continue}
 			if(nums[i] + nums[j] == target){
@@ -35,6 +35,18 @@ func twoSum(nums []int, target int) []int {
 				return r
 		}
 	}    
-}
+}*/ temp:=map[int]int{}
+	for i:=0;i<len(nums);i++{
+	temp[nums[i]]=i
+	}
+	for j:=0;j<len(nums);j++{
+		
+		t1:=target-nums[j]
+		t2,ok := temp[t1]
+		if(ok){
+			if(t2!=j){
+			r[0],r[1]=t2,j}
+		}
+	}
 	return r
 }
