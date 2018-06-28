@@ -1,107 +1,60 @@
-package main
+/*package main
 
 import "fmt"
 
-//  Definition for singly-linked list.
 type ListNode struct {
 	Val  int
 	Next *ListNode
-}
+}*/
 
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
-	var flat = 0
-	var new_ls *ListNode = &ListNode{}
-	var head = new_ls
+
+
+	// 功能点
+	//1. 两个链表不等长
+	//2. 进位问题
+	var carry int = 0
+	//3. 结尾进位
+	//4. 保存新List结果
+	var head = &ListNode{}
+	var cursor = head
+	//1. 两个链表不等长
 	node1, node2 := l1, l2
-	for true {
+	// 从头节点遍历链表 直到两个链表都为空
 
-		if node1 == nil && node2 == nil {
-			break
-		}
-
-		if node1 == nil && node2 != nil{
-			var f = 0
-			for (flat + node2.Val) >= 10 && node2!=nil{
-				new_node := &ListNode{(flat+node2.Val) % 10, nil}
-				fmt.Println(new_node)
-				new_ls.Next = new_node
-				new_ls = new_ls.Next
-				flat = (flat+node2.Val) / 10
-				if node2.Next == nil{
-					new_node := &ListNode{flat, nil}
-					new_ls.Next = new_node
-					new_ls = new_ls.Next
-					flat=0
-					f = 1
-					break
-				}
-				node2 = node2.Next
-			}
-			if node2 == nil && flat !=0{
-				new_node := &ListNode{flat, nil}
-				new_ls.Next = new_node
-				new_ls = new_ls.Next
-			}
-			if node2 != nil && f==0{
-				//fmt.Println(node2.Val+flat)
-				new_node := &ListNode{(flat+node2.Val), node2.Next}
-				new_ls.Next=new_node
-				flat=0
-
-			}
-			break
-		}
-
-		if node2 == nil && node1 != nil{
-			var f = 0
-
-			for (flat + node1.Val) >= 10 && node1!=nil{
-				new_node := &ListNode{(flat+node1.Val) % 10, nil}
-				new_ls.Next = new_node
-				new_ls = new_ls.Next
-				flat = (flat+node1.Val) / 10
-				if node1.Next == nil{
-					new_node := &ListNode{flat, nil}
-					new_ls.Next = new_node
-					new_ls = new_ls.Next
-					flat=0
-					f = 1
-					break
-				}
-				node1 = node1.Next
-			}
-			if node1 == nil && flat !=0{
-				new_node := &ListNode{flat, nil}
-				new_ls.Next = new_node
-				new_ls = new_ls.Next
-			}
-			if node1 != nil && f == 0{
-				new_node := &ListNode{flat+node1.Val, node1.Next}
-
-				new_ls.Next=new_node
-				flat=0
-			}
-			break
-		}
-		value := node1.Val + node2.Val + flat
-
-		if value >= 10 {
-			flat = value / 10
+	for node1 != nil || node2 != nil {
+		var v1, v2 int
+		if node1 != nil {
+			v1 = node1.Val
+			node1 = node1.Next
 		} else {
-			flat = 0
+			v1 = 0
 		}
 
-		new_node := &ListNode{value % 10, nil}
-		new_ls.Next = new_node
-		new_ls = new_ls.Next
+		if node2 != nil {
+			v2 = node2.Val
+			node2 = node2.Next
+		} else {
+			v2 = 0
+		}
 
-		node1 = node1.Next
-		node2 = node2.Next
+		sum := v1 + v2 + carry
+		// yield new node
+		sum_unit := sum % 10
+		new_node := &ListNode{sum_unit, nil}
+		//建立新 List  NewNode1-->NewNode2--->NewNode3
+		cursor.Next = new_node
+		cursor = new_node
+		carry = sum / 10
+		fmt.Println(sum, sum_unit, carry)
 
 	}
-	if flat!=0{
-		new_node := &ListNode{flat,nil}
-		new_ls.Next = new_node
+
+	if node1 == nil && node2 == nil && carry!= 0{
+		// 4.尾部溢出
+		new_node := &ListNode{carry, nil}
+		cursor.Next = new_node
+		cursor = new_node
 	}
 	return head.Next
 }
