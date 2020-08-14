@@ -1,0 +1,22 @@
+// 初级解法
+func maxProfit(prices []int) int {
+    var earning int
+    for buypoint, sellpoint:=0,1;sellpoint < len(prices);{
+        if prices[buypoint] >= prices[sellpoint]{
+            buypoint++
+            sellpoint++
+        }else if sellpoint == (len(prices)-1){
+            earning = (earning + prices[sellpoint] - prices[buypoint])
+            break
+        }else if prices[sellpoint] < prices[sellpoint+1]{
+            sellpoint++
+        }else{
+            earning = (earning + prices[sellpoint] - prices[buypoint])
+            buypoint = sellpoint + 1
+            sellpoint = sellpoint + 2
+        }
+    }
+    return earning
+}
+
+//动态规划解法
